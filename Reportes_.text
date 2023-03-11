@@ -1,0 +1,552 @@
+﻿Imports iTextSharp.text
+Imports iTextSharp.text.pdf
+'
+Imports System.IO
+
+Public Class Reportes
+    Dim pdfDoc As New Document(iTextSharp.text.PageSize.A4, 15.0F, 15.0F, 30.0F, 30.0F)
+    Dim f_mes_desde As String = "", f_mes_hasta As String = ""
+    'Dim pdfWrite As PdfWriter = PdfWriter.GetInstance(pdfDoc, New FileStream("C:\Documentos\Demo03.pdf", FileMode.Create))
+
+    Private Sub PintaCuadrado(ByVal numGrosor As Double, ByVal X1 As Integer, ByVal Y1 As Integer, ByVal X2 As Integer, ByVal Y2 As Integer)
+
+    End Sub
+    Private Sub Pintalinea(ByVal numGrosor As Double, ByVal X1 As Integer, ByVal Y1 As Integer, ByVal X2 As Integer, ByVal Y2 As Integer)
+    End Sub
+
+    Sub file_nom()
+        Dim SaveFileDialog As New SaveFileDialog
+        Dim ruta As String
+        'Dim ruta As String
+
+        With SaveFileDialog
+            .Title = "Guardar"
+            .InitialDirectory = My.Computer.FileSystem.SpecialDirectories.MyDocuments
+            .Filter = "Archivos pdf (*.pdf)|*.pdf"
+            .FileName = "Archivo"
+            .OverwritePrompt = True
+            .CheckPathExists = True
+        End With
+        If SaveFileDialog.ShowDialog() = System.Windows.Forms.DialogResult.OK Then
+            ruta = SaveFileDialog.FileName
+        Else
+            ruta = String.Empty
+            Exit Sub
+        End If
+
+        Dim pdfWrite As PdfWriter = PdfWriter.GetInstance(pdfDoc, New FileStream(ruta, FileMode.Create))
+    End Sub
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+        file_nom()
+
+        Dim Font10 As New Font(FontFactory.GetFont(FontFactory.TIMES_ROMAN, 12, iTextSharp.text.Font.NORMAL))
+        Dim FontB10 As New Font(FontFactory.GetFont(FontFactory.TIMES_ROMAN, 12, iTextSharp.text.Font.BOLD))
+        Dim FontB12 As New Font(FontFactory.GetFont(FontFactory.TIMES_ROMAN, 14, iTextSharp.text.Font.BOLD))
+        Dim CVacio As PdfPCell = New PdfPCell(New Phrase(""))
+        CVacio.Border = 0
+
+        pdfDoc.Open()
+
+        Dim table1 As PdfPTable = New PdfPTable(4)
+        Dim col1 As PdfPCell
+        Dim col2 As PdfPCell
+        Dim col3 As PdfPCell
+        Dim col4 As PdfPCell
+        Dim col5 As PdfPCell
+        Dim col6 As PdfPCell
+        Dim ILine As Integer
+        Dim iFila As Integer
+
+        table1.WidthPercentage = 95
+
+        Dim withs As Single() = New Single() {4.0F, 10.0F, 1.0F, 4.0F}
+        table1.SetWidths(withs)
+
+#Region "Tabla1 - Encabezado"
+        Dim imagenURL As String = "D:\software_fran\images\mu_paredones.png"
+        Dim imagenBMP As iTextSharp.text.Image
+        imagenBMP = iTextSharp.text.Image.GetInstance(imagenURL)
+        imagenBMP.ScaleToFit(130.0F, 134.0F)
+        imagenBMP.SpacingBefore = 20.0F
+        imagenBMP.SpacingAfter = 10.0F
+        'imagenBMP.SetAbsolutePosition(40, 780)
+        imagenBMP.SetAbsolutePosition(20, 700)
+        pdfDoc.Add(imagenBMP)
+
+        table1.AddCell(CVacio)
+
+        col2 = New PdfPCell(New Phrase("MUNICIPALIDAD DE PAREDONES", FontB12))
+        col2.Column.Alignment = Element.ALIGN_JUSTIFIED_ALL
+        col2.Border = 0
+        table1.AddCell(col2)
+
+        table1.AddCell(CVacio)
+
+        col3 = New PdfPCell(New Phrase("INFORME"))
+        col3.Column.Alignment = Element.ALIGN_CENTER
+        table1.AddCell(col3)
+
+        '--------------------------------------------------------------------------------------------
+        table1.AddCell(CVacio)
+        col2 = New PdfPCell(New Phrase("C H I L E", FontB12))
+        col2.Column.Alignment = Element.ALIGN_CENTER
+        col2.Border = 0
+        'col2.PaddingLeft = 8
+        table1.AddCell(col2)
+
+        table1.AddCell(CVacio)
+
+        col3 = New PdfPCell(New Phrase("Ingreso recolección de basura"))
+        ' col3.Column.Alignment = Element.ALIGN_CENTER
+        table1.AddCell(col3)
+        '------------------------------------------------------------------------------------------
+        table1.AddCell(CVacio)
+        col2 = New PdfPCell(New Phrase("Región: General Libertador Bernardo O'Higgins", Font10))
+        col2.Border = 0
+        col2.PaddingLeft = 8
+        table1.AddCell(col2)
+
+        table1.AddCell(CVacio)
+
+        col3 = New PdfPCell(New Phrase("fecha"))
+        ' col3.Column.Alignment = Element.ALIGN_CENTER
+        table1.AddCell(col3)
+        '--------------------------------------------------------------------------------------------
+        table1.AddCell(CVacio)
+        col2 = New PdfPCell(New Phrase("Provincia: Cardenal Caro", Font10))
+        col2.Border = 0
+        col2.PaddingLeft = 8
+        table1.AddCell(col2)
+
+        table1.AddCell(CVacio)
+
+        col3 = New PdfPCell(New Phrase(""))
+        'col3.Column.Alignment = Element.ALIGN_CENTER
+        table1.AddCell(col3)
+        '--------------------------------------------------------------------------------------------
+        table1.AddCell(CVacio)
+        col2 = New PdfPCell(New Phrase("Dirección: Doctor Moore Nº 15 - Paredones", Font10))
+        col2.Border = 0
+        col2.PaddingLeft = 8
+        table1.AddCell(col2)
+
+        table1.AddCell(CVacio)
+
+        col3 = New PdfPCell(New Phrase(""))
+        ' col3.Column.Alignment = Element.ALIGN_CENTER
+        table1.AddCell(col3)
+
+        pdfDoc.Add(table1)
+#End Region
+        pdfDoc.Close()
+    End Sub
+    Sub Codigo_Reporte_()
+        Dim SaveFileDialog As New SaveFileDialog
+        Dim ruta As String
+        'Dim ruta As String
+
+        With SaveFileDialog
+            .Title = "Guardar"
+            .InitialDirectory = My.Computer.FileSystem.SpecialDirectories.MyDocuments
+            .Filter = "Archivos pdf (*.pdf)|*.pdf"
+            .FileName = "Archivo"
+            .OverwritePrompt = True
+            .CheckPathExists = True
+        End With
+        If SaveFileDialog.ShowDialog() = System.Windows.Forms.DialogResult.OK Then
+            ruta = SaveFileDialog.FileName
+        Else
+            ruta = String.Empty
+            Exit Sub
+        End If
+
+        Dim pdfWrite As PdfWriter = PdfWriter.GetInstance(pdfDoc, New FileStream(ruta, FileMode.Create))
+        'genera pdf
+        'Try
+        'creamos un documento 
+        'Dim document As New iTextSharp.text.Document(PageSize.A4)
+        'configuramos la hoja
+        'Document.PageSize.Rotate()
+        'ahora algunas propiedades
+        'Document.AddAuthor("Arturo MP")
+        'Document.AddTitle("Generando Pdf")
+
+        'Dim writer As PdfWriter = PdfWriter.GetInstance(Document, New System.IO.FileStream(ruta, System.IO.FileMode.Create))
+        'con esto conseguimos que el documento sea presentado como página simple
+        'writer.ViewerPreferences = PdfWriter.PageLayoutSinglePage
+        'abrimos el documento para iniciar a escribir
+        'Document.Open()
+
+        'empezamos defeniendo el tipo de letra y vamos añadir el contenido
+        'Dim cb As PdfContentByte = writer.DirectContent
+        'Dim bf As BaseFont = BaseFont.CreateFont(BaseFont.COURIER_BOLD, BaseFont.CP1252, BaseFont.NOT_EMBEDDED)
+        ' cb.SetFontAndSize(bf, 10)
+        'cb.BeginText()
+
+        'Datos
+        'cb.SetTextMatrix(50, 790)
+        'cb.ShowText("Datos: " & Me.DatosTextBox1.Text)
+        Dim Font8 As New Font(FontFactory.GetFont(FontFactory.HELVETICA, 8, iTextSharp.text.Font.NORMAL))
+        Dim FontB8 As New Font(FontFactory.GetFont(FontFactory.HELVETICA, 8, iTextSharp.text.Font.BOLD))
+        Dim FontB12 As New Font(FontFactory.GetFont(FontFactory.HELVETICA, 12, iTextSharp.text.Font.BOLD))
+        Dim CVacio As PdfPCell = New PdfPCell(New Phrase(""))
+        CVacio.Border = 0
+
+        pdfDoc.Open()
+
+        Dim table1 As PdfPTable = New PdfPTable(4)
+        Dim col1 As PdfPCell
+        Dim col2 As PdfPCell
+        Dim col3 As PdfPCell
+        Dim col4 As PdfPCell
+        Dim col5 As PdfPCell
+        Dim col6 As PdfPCell
+        Dim ILine As Integer
+        Dim iFila As Integer
+
+        table1.WidthPercentage = 95
+
+        Dim withs As Single() = New Single() {4.0F, 7.0F, 1.0F, 4.0F}
+        table1.SetWidths(withs)
+
+#Region "Tabla1 - Encabezado"
+        Dim imagenURL As String = "D:\software_fran\images\mu_paredones.png"
+        Dim imagenBMP As iTextSharp.text.Image
+        imagenBMP = iTextSharp.text.Image.GetInstance(imagenURL)
+        imagenBMP.ScaleToFit(110.0F, 114.0F)
+        imagenBMP.SpacingBefore = 20.0F
+        imagenBMP.SpacingAfter = 10.0F
+        'imagenBMP.SetAbsolutePosition(40, 780)
+        imagenBMP.SetAbsolutePosition(40, 730)
+        pdfDoc.Add(imagenBMP)
+
+        table1.AddCell(CVacio)
+
+        col2 = New PdfPCell(New Phrase("NOMBRE DE LA EMPRESA EMISORA", FontB8))
+        col2.Border = 0
+        table1.AddCell(col2)
+        table1.AddCell(CVacio)
+
+        col3 = New PdfPCell(New Phrase("NOTA DE CRÉDITO", FontB8))
+        col3.Border = 0
+        table1.AddCell(col3)
+        table1.AddCell(CVacio)
+
+        col2 = New PdfPCell(New Phrase("AV. BRAZIL - CALLE UNIVERSITARIA XXX URBANIZACIÓN", Font8))
+        col2.Border = 0
+        table1.AddCell(col2)
+        table1.AddCell(CVacio)
+
+        col3 = New PdfPCell(New Phrase("    ELECTRÓNICA", FontB8))
+        col3.Border = 0
+        table1.AddCell(col3)
+        table1.AddCell(CVacio)
+
+        col2 = New PdfPCell(New Phrase("Lima - Lima - Lima", Font8))
+        col2.Border = 0
+        table1.AddCell(col2)
+        table1.AddCell(CVacio)
+
+        col3 = New PdfPCell(New Phrase("RUC: 123456789098", FontB8))
+        col3.Border = 0
+        table1.AddCell(col3)
+        table1.AddCell(CVacio)
+
+        col2 = New PdfPCell(New Phrase("(01) 332 1XXX / 6420321XXX", Font8))
+        col2.Border = 0
+        table1.AddCell(col2)
+        table1.AddCell(CVacio)
+
+        col3 = New PdfPCell(New Phrase("", FontB8))
+        col3.Border = 0
+        table1.AddCell(col3)
+        table1.AddCell(CVacio)
+
+        col2 = New PdfPCell(New Phrase("www.1XXX/6420321XXX.com", Font8))
+        col2.Border = 0
+        table1.AddCell(col2)
+        table1.AddCell(CVacio)
+
+        col3 = New PdfPCell(New Phrase(" F001-00004", FontB12))
+        'col3.BorderWidthBottom = 2
+        table1.AddCell(col3)
+        table1.AddCell(CVacio)
+
+        'table1.Rows.Add()
+
+        pdfDoc.Add(table1)
+#End Region
+        PintaCuadrado(0.7, 410, 740, 530, 820)
+        Pintalinea(0.5, 30, 733, 530, 733)
+        pdfDoc.Add(New Paragraph("."))
+
+#Region "Tabla2 - Cliente"
+        Dim Table2 As PdfPTable = New PdfPTable(4)
+        Dim withs2 As Single() = New Single() {2.0F, 8.0F, 3.0F, 2.0F}
+        Table2.WidthPercentage = 95
+        Table2.SetWidths(withs2)
+        Table2.AddCell(CVacio)
+        Table2.AddCell(CVacio)
+        Table2.AddCell(CVacio)
+        Table2.AddCell(CVacio)
+
+        col1 = New PdfPCell(New Phrase("CLIENTE", FontB8))
+        col1.Border = 0
+        Table2.AddCell(col1)
+
+        col2 = New PdfPCell(New Phrase("HT INGENIERÍA & CONSULTORÍA", Font8))
+        col2.Border = 0
+        Table2.AddCell(col2)
+
+        col3 = New PdfPCell(New Phrase("Fecha Emisión: ", FontB8))
+        col3.Border = 0
+        Table2.AddCell(col3)
+
+        col4 = New PdfPCell(New Phrase("09/05/2022", FontB8))
+        col4.Border = 0
+        Table2.AddCell(col4)
+
+        Table2.AddCell(CVacio)
+        Table2.AddCell(CVacio)
+
+        col3 = New PdfPCell(New Phrase("Nº Factura: ", FontB8))
+        col3.Border = 0
+        Table2.AddCell(col3)
+
+        col4 = New PdfPCell(New Phrase("F001-00441", Font8))
+        col4.Border = 0
+        Table2.AddCell(col4)
+
+        col1 = New PdfPCell(New Phrase("RUC:", FontB8))
+        col1.Border = 0
+        Table2.AddCell(col1)
+
+        col2 = New PdfPCell(New Phrase("1234567890", Font8))
+        col2.Border = 0
+        Table2.AddCell(col2)
+
+        col3 = New PdfPCell(New Phrase("Moneda: ", FontB8))
+        col3.Border = 0
+        Table2.AddCell(col3)
+
+        col4 = New PdfPCell(New Phrase("Soles", Font8))
+        col4.Border = 0
+        Table2.AddCell(col4)
+
+        col1 = New PdfPCell(New Phrase("Dirección:", FontB8))
+        col1.Border = 0
+        Table2.AddCell(col1)
+
+        col2 = New PdfPCell(New Phrase("CAL. MARTIN DE MURUA NRO XXX INT XXX URB MARANGA ET SIETE LIMA - LIMA", Font8))
+        col2.Border = 0
+        Table2.AddCell(col2)
+
+        Table2.AddCell(CVacio)
+        Table2.AddCell(CVacio)
+
+        pdfDoc.Add(Table2)
+#End Region
+        Pintalinea(0.5, 30, 674, 530, 674)
+
+#Region "Tabla3 - Cabecera"
+        Dim Table3 As PdfPTable = New PdfPTable(7)
+        Dim withs3 As Single() = New Single() {1.08F, 8.0F, 1.0F, 1.0F, 2.0F, 2.0F, 1.0F}
+        Table3.WidthPercentage = 95
+        Table3.SetWidths(withs3)
+
+        col1 = New PdfPCell(New Phrase("ITEM", FontB8))
+        col1.Border = 0
+        Table3.AddCell(col1)
+
+        col2 = New PdfPCell(New Phrase("DESCRIPCIÓN", FontB8))
+        col2.Border = 0
+        Table3.AddCell(col2)
+
+        col3 = New PdfPCell(New Phrase("CANT", FontB8))
+        col3.Border = 0
+        Table3.AddCell(col3)
+
+        col4 = New PdfPCell(New Phrase("UND", FontB8))
+        col4.Border = 0
+        Table3.AddCell(col4)
+
+        col5 = New PdfPCell(New Phrase("PRE UNIT", FontB8))
+        col5.Border = 0
+        col5.HorizontalAlignment = 2
+        Table3.AddCell(col5)
+
+        col6 = New PdfPCell(New Phrase("TOTAL", FontB8))
+        col6.Border = 0
+        col6.HorizontalAlignment = 2
+        Table3.AddCell(col6)
+        Table3.AddCell(CVacio)
+
+        pdfDoc.Add(Table3)
+#End Region
+
+#Region "Tabla4 - Detalle"
+        Dim Table4 As PdfPTable = New PdfPTable(7)
+        Dim withs4 As Single() = New Single() {1.0F, 8.0F, 1.0F, 1.0F, 2.0F, 2.0F, 1.0F}
+        Table4.WidthPercentage = 95
+        Table4.SetWidths(withs4)
+
+        col1 = New PdfPCell(New Phrase("01", Font8))
+        col1.Border = 0
+        Table4.AddCell(col1)
+
+        col2 = New PdfPCell(New Phrase("TUBO 2 ACRERO INOXIDABLE REFORZADO CON ALUMINIO Y BAÑADO CON ACERO", Font8))
+        col2.Border = 0
+        Table4.AddCell(col2)
+
+        col3 = New PdfPCell(New Phrase("2", Font8))
+        col3.Border = 0
+        Table4.AddCell(col3)
+
+        col4 = New PdfPCell(New Phrase("PZA", Font8))
+        col4.Border = 0
+        Table4.AddCell(col4)
+
+        col5 = New PdfPCell(New Phrase("800.26", Font8))
+        col5.Border = 0
+        col5.HorizontalAlignment = 2
+        Table4.AddCell(col5)
+
+        col6 = New PdfPCell(New Phrase("1600.52", Font8))
+        col6.Border = 0
+        col6.HorizontalAlignment = 2
+        Table4.AddCell(col6)
+        Table4.AddCell(CVacio)
+
+        '-----------------------------------------------------------------
+        col1 = New PdfPCell(New Phrase("01", Font8))
+        col1.Border = 0
+        Table4.AddCell(col1)
+
+        col2 = New PdfPCell(New Phrase("TUBO 2 ACRERO INOXIDABLE REFORZADO CON ALUMINIO Y BAÑADO CON ACERO", Font8))
+        col2.Border = 0
+        Table4.AddCell(col2)
+
+        col3 = New PdfPCell(New Phrase("2", Font8))
+        col3.Border = 0
+        Table4.AddCell(col3)
+
+        col4 = New PdfPCell(New Phrase("PZA", Font8))
+        col4.Border = 0
+        Table4.AddCell(col4)
+
+        col5 = New PdfPCell(New Phrase("800.26", Font8))
+        col5.Border = 0
+        col5.HorizontalAlignment = 2
+        Table4.AddCell(col5)
+
+        col6 = New PdfPCell(New Phrase("1600.52", Font8))
+        col6.Border = 0
+        col6.HorizontalAlignment = 2
+        Table4.AddCell(col6)
+        Table4.AddCell(CVacio)
+
+        '----------------------------------------------------------------------
+        pdfDoc.Add(Table4)
+
+
+#End Region
+
+        Pintalinea(0.5, 30, 200, 530, 200)
+
+        For iFila = 1 To 40
+            pdfDoc.Add(New Phrase("."))
+            ILine = pdfWrite.GetVerticalPosition(True)
+            If ILine < 200 Then
+                Exit For
+            End If
+        Next
+
+#Region "Tabla5 - Final"
+        Dim Table5 As PdfPTable = New PdfPTable(5)
+        Dim withs5 As Single() = New Single() {8.0F, 1.0F, 2.0F, 2.0F, 1.0F}
+        Table5.WidthPercentage = 95
+        Table5.SetWidths(withs5)
+
+        col1 = New PdfPCell(New Phrase("OBSERVACIONES", FontB8))
+        col1.Border = 0
+        Table5.AddCell(col1)
+        Table5.AddCell(CVacio)
+
+        col3 = New PdfPCell(New Phrase("SUB TOTAL", Font8))
+        col3.Border = 0
+        Table5.AddCell(col3)
+        Table5.AddCell(CVacio)
+
+        col4 = New PdfPCell(New Phrase("2232.17", FontB8))
+        col4.Border = 0
+        col4.HorizontalAlignment = 2
+        Table5.AddCell(col4)
+        Table5.AddCell(CVacio)
+
+        col1 = New PdfPCell(New Phrase("Sin Observaciones", Font8))
+        col1.Border = 0
+        Table5.AddCell(col1)
+        Table5.AddCell(CVacio)
+
+        col3 = New PdfPCell(New Phrase("IGV", Font8))
+        col3.Border = 0
+        Table5.AddCell(col3)
+        Table5.AddCell(CVacio)
+
+        col4 = New PdfPCell(New Phrase("401.79", FontB8))
+        col4.Border = 0
+        col4.HorizontalAlignment = 2
+        Table5.AddCell(col4)
+        Table5.AddCell(CVacio)
+
+        col1 = New PdfPCell(New Phrase("", Font8))
+        col1.Border = 0
+        Table5.AddCell(col1)
+        Table5.AddCell(CVacio)
+
+        col3 = New PdfPCell(New Phrase("TOTAL S/.", Font8))
+        col3.Border = 0
+        Table5.AddCell(col3)
+        Table5.AddCell(CVacio)
+
+        col4 = New PdfPCell(New Phrase("2633.96", FontB8))
+        col4.Border = 0
+        col4.HorizontalAlignment = 2
+        Table5.AddCell(col4)
+        Table5.AddCell(CVacio)
+
+        col1 = New PdfPCell(New Phrase("Son: Dos mil seiscientos treinta y tres con 96/100 soles", Font8))
+        col1.Border = 0
+        col1.Colspan = 2
+        Table5.AddCell(col1)
+        Table5.AddCell(CVacio)
+        Table5.AddCell(CVacio)
+        Table5.AddCell(CVacio)
+
+        pdfDoc.Add(Table5)
+#End Region
+
+        Dim imagenURL2 As String = "D:\software_fran\images\mu_paredones.png"
+        Dim imagenBMP2 As iTextSharp.text.Image
+        imagenBMP2 = iTextSharp.text.Image.GetInstance(imagenURL2)
+        imagenBMP2.ScaleToFit(110.0F, 100.0F)
+        imagenBMP2.SpacingBefore = 20.0F
+        imagenBMP2.SpacingAfter = 10.0F
+        imagenBMP2.SetAbsolutePosition(270, 70)
+        pdfDoc.Add(imagenBMP2)
+
+        'cb.EndText()
+        'y cerramos
+        'document.Close()
+        pdfDoc.Close()
+        'Process.Start(ruta)
+
+        ' Catch ex As Exception
+        'MessageBox.Show("Error al generar PDF", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        'End Try
+    End Sub
+
+    Private Sub Reportes_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+
+    End Sub
+End Class

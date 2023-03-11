@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <_LastSelectedProfileId>D:\software_fran\My Project\PublishProfiles\FolderProfile4.pubxml</_LastSelectedProfileId>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Update="Chofer.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Reporte.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Lugar.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Patente.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Registro.vb">
+      <SubType>Form</SubType>
+    </Compile>
+  </ItemGroup>
+</Project>
