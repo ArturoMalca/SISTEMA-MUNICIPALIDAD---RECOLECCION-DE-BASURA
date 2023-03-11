@@ -1,0 +1,15 @@
+D:\software_paredones.exe
+D:\software_paredones.dll
+D:\software_paredones.deps.json
+D:\software_paredones.runtimeconfig.json
+D:\software_paredones.pdb
+D:\BouncyCastle.Crypto.dll
+D:\DocumentFormat.OpenXml.dll
+D:\itextsharp.dll
+D:\SpreadsheetLight.dll
+D:\System.Data.SqlClient.dll
+D:\runtimes\win-arm64\native\sni.dll
+D:\runtimes\win-x64\native\sni.dll
+D:\runtimes\win-x86\native\sni.dll
+D:\runtimes\unix\lib\netcoreapp2.1\System.Data.SqlClient.dll
+D:\runtimes\win\lib\netcoreapp2.1\System.Data.SqlClient.dll
